@@ -20,6 +20,11 @@ public class UserDTO {
     @Size(min = 4, max = 50)
     private String displayName;
 
+    @NotNull
+    @Column(length = 50)
+    @Size(max = 50)
+    private String email;
+
     @NotNull(message = "A 'senha' não pode ser nula")
     @Size(min = 6)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
