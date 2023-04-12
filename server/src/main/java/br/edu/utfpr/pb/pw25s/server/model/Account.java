@@ -2,8 +2,9 @@ package br.edu.utfpr.pb.pw25s.server.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_account")
@@ -13,4 +14,31 @@ import javax.persistence.Table;
 @Builder
 @EqualsAndHashCode(of = {"id"})
 public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long ID;
+
+    @NotNull
+    @Column(length = 50)
+    @Size(min = 9, max = 50)
+    private long Number;
+
+    @NotNull
+    @Column(length = 50)
+    @Size(min = 4, max = 50)
+    private long Agency;
+
+    @NotNull
+    @Column(length = 50)
+    @Size(min = 4, max = 50)
+    private String Bank;
+
+    @NotNull
+    @Column
+    @Size(min = 4, max = 50)
+    private String Type;
+
+
+
 }

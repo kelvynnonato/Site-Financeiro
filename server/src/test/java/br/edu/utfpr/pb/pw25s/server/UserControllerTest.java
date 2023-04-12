@@ -84,9 +84,9 @@ public class UserControllerTest {
     }
 
     @Test
-    public void postUser_whenUserHasDisplayNameLessThanRequired_receiveBadRequest(){
+    public void postUser_whenUserHasCellphoneLessThanRequired_receiveBadRequest(){
         User user = createValidUser();
-        user.setDisplayName("abc");
+        user.setCellphone("123");
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -110,11 +110,11 @@ public class UserControllerTest {
     }
 
     @Test
-    public void postUser_whenUserHasDisplayNameExceedsTheLengthLimit_receiveBadRequest(){
+    public void postUser_whenUserHasCellphoneExceedsTheLengthLimit_receiveBadRequest(){
         User user = createValidUser();
         String stringWith256Chars = IntStream.rangeClosed(1, 256).mapToObj(x-> "a")
                 .collect(Collectors.joining());
-        user.setDisplayName(stringWith256Chars);
+        user.setCellphone(stringWith256Chars);
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -124,6 +124,13 @@ public class UserControllerTest {
         User user = createValidUser();
 
         user.setPassword("password");
+        ResponseEntity<Object> response = postSignup(user, Object.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+    @Test
+    public void postUser_whenUserHasSymbolInCellphone_receiveBadRequest(){
+        User user = createValidUser();
+        user.setCellphone("098a");
         ResponseEntity<Object> response = postSignup(user, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
@@ -180,7 +187,7 @@ public class UserControllerTest {
     private User createValidUser() {
         User user = new User();
         user.setUsername("test-user");
-        user.setDisplayName("test-display");
+        user.setCellphone("18 996950566");
         user.setPassword("P4ssword");
 
         return user;
