@@ -34,11 +34,9 @@ public class Account {
     @Size(min = 4, max = 50)
     private String Bank;
 
-    @NotNull
-    @Column
-    @Size(min = 4, max = 50)
-    private String Type;
-
+    @ManyToOne
+    @JoinColumn(name = "typeAccount_id", referencedColumnName = "id")
+    private TypeAccount Type;
 
 
 }

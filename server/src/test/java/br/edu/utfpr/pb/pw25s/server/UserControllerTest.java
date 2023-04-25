@@ -187,8 +187,9 @@ public class UserControllerTest {
     private User createValidUser() {
         User user = new User();
         user.setUsername("test-user");
-        user.setCellphone("18 996950566");
+        user.setCellphone("18996950566");
         user.setPassword("P4ssword");
+        user.setEmail("kelvyn_nonato@hotmail.com");
 
         return user;
     }
