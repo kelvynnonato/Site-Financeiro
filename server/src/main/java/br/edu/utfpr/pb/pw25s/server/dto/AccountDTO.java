@@ -9,26 +9,19 @@ import javax.validation.constraints.Size;
 @Data
 public class AccountDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @NotNull
-    @Column(length = 50)
-    @Size(min = 9, max = 50)
-    private long Number;
+    private long number;
 
     @NotNull
-    @Column(length = 50)
+    private long agency;
+
+    @NotNull
     @Size(min = 4, max = 50)
-    private long Agency;
+    private String bank;
 
-    @NotNull
-    @Column(length = 50)
-    @Size(min = 4, max = 50)
-    private String Bank;
-
-    private TypeAccountDTO Type;
+    private TypeAccountDTO type;
 
 }
 

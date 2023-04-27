@@ -19,7 +19,7 @@ public class UserDTO {
     @NotNull
     @Column(length = 50, name = "cellphone")
     @Size(min = 4, max = 50)
-    @Pattern(regexp = "^[0-9]$")
+    @Pattern(regexp = "^[ 0-9-+]+$")
     private String cellphone;
 
     @NotNull

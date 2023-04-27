@@ -22,7 +22,7 @@ public class Movement {
     private Long id;
 
     @NotNull
-    private BigDecimal value;
+    private BigDecimal valueAmount;
 
     @NotNull
     private Long date;
@@ -34,14 +34,14 @@ public class Movement {
     @NotNull
     @Column(length = 255)
     @Size(min = 4, max = 255)
-    private String Description;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "situation_id", referencedColumnName = "id")
-    private Situation Situation;
+    private Situation situation;
 
     @ManyToOne
-    @JoinColumn(name = "typeMovement_id", referencedColumnName = "id")
-    private TypeMovement Type;
+    @JoinColumn(name = "typemovement_id", referencedColumnName = "id")
+    private TypeMovement type;
 }
 

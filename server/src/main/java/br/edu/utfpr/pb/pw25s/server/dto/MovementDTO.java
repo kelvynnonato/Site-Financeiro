@@ -15,7 +15,7 @@ public class MovementDTO {
     private Long id;
 
     @NotNull
-    private BigDecimal value;
+    private BigDecimal valueAmount;
 
     @NotNull
     private Long date;
@@ -25,9 +25,9 @@ public class MovementDTO {
     @NotNull
     @Column(length = 255)
     @Size(min = 4, max = 255)
-    private String Description;
+    private String description;
 
-    private SituationDTO Situation;
+    private SituationDTO situation;
 
-    private TypeMovementDTO Type;
+    private TypeMovementDTO type;
 }

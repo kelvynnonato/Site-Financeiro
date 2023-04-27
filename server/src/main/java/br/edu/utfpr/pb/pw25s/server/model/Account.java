@@ -17,26 +17,24 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @NotNull
-    @Column(length = 50)
-    @Size(min = 9, max = 50)
-    private long Number;
+    @Column
+    private long number;
+
+    @NotNull
+    @Column
+    private long agency;
 
     @NotNull
     @Column(length = 50)
     @Size(min = 4, max = 50)
-    private long Agency;
-
-    @NotNull
-    @Column(length = 50)
-    @Size(min = 4, max = 50)
-    private String Bank;
+    private String bank;
 
     @ManyToOne
-    @JoinColumn(name = "typeAccount_id", referencedColumnName = "id")
-    private TypeAccount Type;
+    @JoinColumn(name = "type_account_id", referencedColumnName = "id")
+    private TypeAccount type;
 
 
 }
