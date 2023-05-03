@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -14,7 +15,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"id"})
-
 public class Movement {
 
     @Id
@@ -25,7 +25,10 @@ public class Movement {
     private BigDecimal valueAmount;
 
     @NotNull
-    private Long date;
+    @Column(length = 20, name = "date")
+    @Size(min = 4, max = 20)
+    @Pattern(regexp = "^[ 0-9-+/]+$")
+    private String date;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")

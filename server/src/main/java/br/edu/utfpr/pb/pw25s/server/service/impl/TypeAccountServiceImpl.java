@@ -11,7 +11,9 @@ public class TypeAccountServiceImpl extends CrudServiceImpl<TypeAccount, Long> i
 
     private TypeAccountRepository typeAccountRepository;
 
-    public TypeAccountServiceImpl (TypeAccountRepository typeAccountRepository) {this.typeAccountRepository = typeAccountRepository;}
+    public TypeAccountServiceImpl (TypeAccountRepository typeAccountRepository) {
+        this.typeAccountRepository = typeAccountRepository;
+    }
 
     @Override
     protected JpaRepository<TypeAccount, Long> getRepository() {

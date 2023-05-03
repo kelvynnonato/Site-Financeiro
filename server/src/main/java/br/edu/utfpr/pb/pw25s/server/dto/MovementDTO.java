@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -18,7 +19,10 @@ public class MovementDTO {
     private BigDecimal valueAmount;
 
     @NotNull
-    private Long date;
+    @Column(length = 20, name = "date")
+    @Size(min = 4, max = 20)
+    @Pattern(regexp = "^[ 0-9-+/]+$")
+    private String date;
 
     private CategoryDTO category;
 

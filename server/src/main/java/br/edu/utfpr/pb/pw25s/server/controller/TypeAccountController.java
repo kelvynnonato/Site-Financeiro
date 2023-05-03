@@ -18,7 +18,7 @@ public class TypeAccountController extends CrudController<TypeAccount, TypeAccou
 
     private static ModelMapper modelMapper;
 
-    public TypeAccountController(ProductService productService,
+    public TypeAccountController(TypeAccountService typeAccountService,
                                  ModelMapper modelMapper) {
         super(TypeAccount.class, TypeAccountDTO.class);
         this.typeAccountService = typeAccountService;
