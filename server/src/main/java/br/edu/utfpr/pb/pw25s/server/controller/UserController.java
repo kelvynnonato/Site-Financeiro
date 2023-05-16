@@ -5,6 +5,7 @@ import br.edu.utfpr.pb.pw25s.server.model.User;
 import br.edu.utfpr.pb.pw25s.server.service.UserService;
 import br.edu.utfpr.pb.pw25s.server.shared.GenericResponse;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,5 +31,10 @@ public class UserController {
         GenericResponse genericResponse = new GenericResponse();
         genericResponse.setMessage("User Saved.");
         return genericResponse;
+    }
+
+    @GetMapping
+    public String getUserInfo (){
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

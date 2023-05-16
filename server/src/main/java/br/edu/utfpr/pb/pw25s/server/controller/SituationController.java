@@ -1,11 +1,8 @@
 package br.edu.utfpr.pb.pw25s.server.controller;
 
-import br.edu.utfpr.pb.pw25s.server.dto.ProductDTO;
 import br.edu.utfpr.pb.pw25s.server.dto.SituationDTO;
-import br.edu.utfpr.pb.pw25s.server.model.Product;
 import br.edu.utfpr.pb.pw25s.server.model.Situation;
 import br.edu.utfpr.pb.pw25s.server.service.CrudService;
-import br.edu.utfpr.pb.pw25s.server.service.ProductService;
 import br.edu.utfpr.pb.pw25s.server.service.SituationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.RequestMapping;

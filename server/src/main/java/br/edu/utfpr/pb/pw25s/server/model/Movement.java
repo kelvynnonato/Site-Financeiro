@@ -46,5 +46,9 @@ public class Movement {
     @ManyToOne
     @JoinColumn(name = "typemovement_id", referencedColumnName = "id")
     private TypeMovement type;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 }
 

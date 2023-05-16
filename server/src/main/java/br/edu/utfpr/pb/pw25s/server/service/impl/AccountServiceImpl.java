@@ -19,4 +19,11 @@ public class AccountServiceImpl extends CrudServiceImpl<Account, Long> implement
     protected JpaRepository<Account, Long> getRepository() {
         return accountRepository;
     }
+
+    @Override
+    public Account save(Account entity) {
+        //nesse lugar tem que setar o usuario logado
+        //para pegar o usuario autenticado tem que user o securitycontextholder
+        return super.save(entity);
+    }
 }

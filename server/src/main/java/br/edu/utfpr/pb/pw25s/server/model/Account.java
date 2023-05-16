@@ -36,5 +36,7 @@ public class Account {
     @JoinColumn(name = "type_account_id", referencedColumnName = "id")
     private TypeAccount type;
 
-
+    @ManyToOne
+    @JoinColumn(name= "user_ud", referencedColumnName = "id")
+    private User user;
 }

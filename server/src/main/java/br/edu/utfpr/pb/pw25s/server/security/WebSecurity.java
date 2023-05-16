@@ -45,6 +45,7 @@ public class WebSecurity {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -47,11 +47,11 @@ public abstract class CrudController <T, D, ID extends Serializable> {
 
     @GetMapping("page") //http://ip.api:port/classname/page
     public ResponseEntity<Page<D>> findAll(
-                        @RequestParam int page,
-                        @RequestParam int size,
-                        @RequestParam(required = false) String order,
-                        @RequestParam(required = false) Boolean asc
-                    ){
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam(required = false) String order,
+            @RequestParam(required = false) Boolean asc
+    ){
         PageRequest pageRequest = PageRequest.of(page, size);
         if (order != null && asc != null){
             pageRequest = PageRequest.of(page, size,
