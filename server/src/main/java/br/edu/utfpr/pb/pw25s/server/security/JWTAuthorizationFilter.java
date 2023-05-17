@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class JWTAuthorizationFilter  extends BasicAuthenticationFilter {
 
-    private  final AuthService authService;
+    private final AuthService authService;
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager,
                                   AuthService authService) {

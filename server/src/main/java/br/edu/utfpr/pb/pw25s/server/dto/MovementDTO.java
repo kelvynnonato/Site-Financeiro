@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw25s.server.dto;
 
+import br.edu.utfpr.pb.pw25s.server.model.Account;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,4 +35,8 @@ public class MovementDTO {
     private SituationDTO situation;
 
     private TypeMovementDTO type;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
 }

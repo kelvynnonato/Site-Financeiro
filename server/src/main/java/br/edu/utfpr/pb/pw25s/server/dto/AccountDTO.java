@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.pw25s.server.dto;
 
+import br.edu.utfpr.pb.pw25s.server.model.User;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,5 +24,8 @@ public class AccountDTO {
 
     private TypeAccountDTO type;
 
+    @ManyToOne
+    @JoinColumn(name= "user_id", referencedColumnName = "id")
+    private User user;
 }
 
