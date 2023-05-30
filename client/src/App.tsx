@@ -1,9 +1,13 @@
 import  './App.css'
+import { ChakraProvider } from '@chakra-ui/react'
+import { UserSignUpPage } from './pages/UserSignUpPage'
+
+
 export  function App() {
 	return (
-		<div>
-			<h1>Bem vindo!</h1>
-		</div>
+		<ChakraProvider>
+			<UserSignUpPage />
+		</ChakraProvider>
 	)
 }
 
