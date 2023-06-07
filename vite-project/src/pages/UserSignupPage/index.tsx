@@ -8,12 +8,14 @@ import { Link, useNavigate } from "react-router-dom";
 export function UserSignupPage() {
   const [form, setForm] = useState({
     username: "",
+    displayName: "",
     cellphone: "",
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState({
     username: "",
+    displayName: "",
     cellphone: "",
     email: "",
     password: "",
@@ -45,6 +47,7 @@ export function UserSignupPage() {
     setPendingApiCall(true);
     const user: IUserSignup = {
       username: form.username,
+      displayName: form.displayName,
       cellphone: form.cellphone,
       email: form.email,
       password: form.password,
@@ -81,15 +84,28 @@ export function UserSignupPage() {
 
       <div className="col-12 mb-3">
         <Input
-          label="Informe seu nome"
+          label="Informe seu nome de usuário"
           className="form-control"
           type="text"
-          placeholder="Informe o seu nome"
+          placeholder="Informe o seu nome de usuário"
           name="username"
           onChange={onChange}
           value={form.username}
           hasError={errors.username ? true : false}
           error={errors.username}
+        />
+      </div>
+      <div className="col-12 mb-3">
+        <Input
+          label="Informe seu nome"
+          className="form-control"
+          type="text"
+          placeholder="Informe o seu nome"
+          name="displayName"
+          onChange={onChange}
+          value={form.displayName}
+          hasError={errors.displayName ? true : false}
+          error={errors.displayName}
         />
       </div>
       <div className="col-12 mb-3">

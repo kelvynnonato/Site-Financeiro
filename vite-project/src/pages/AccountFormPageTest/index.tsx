@@ -10,27 +10,27 @@ import {
   Select,
   Button,
 } from "@chakra-ui/react";
-import CategoryService from "@/service/AccountService";
-import ProductService from "@/service/ProductService";
-import { IAccount, IProduct } from "@/commons/interfaces";
+import { IAccount, ITypeAccount } from "@/commons/interfaces";
+import TypeAccountService from "@/service/TypeAccountService";
+import AccountService from "@/service/AccountService";
 
-export function ProductFormPageV2() {
+export function AccountFormPageTest() {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<IProduct>();
+  } = useForm<IAccount>();
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
   const { id } = useParams();
-  const [categories, setCategories] = useState<ICategory[]>([]);
-  const [entity, setEntity] = useState<IProduct>({
+  const [typeAccounts, setTypeAccounts] = useState<ITypeAccount[]>([]);
+  const [entity, setEntity] = useState<IAccount>({
     id: undefined,
-    name: "",
-    price: 0,
-    description: "",
-    category: { id: undefined, name: "" },
+    number: 0,
+    agency: 0,
+    bank: "",
+    type: { id: undefined, name: "" }
   });
 
   // Executa ao carregar o componente
@@ -40,42 +40,42 @@ export function ProductFormPageV2() {
 
   const loadData = async () => {
     // Busca a lista de categorias
-    await CategoryService.findAll()
+    await TypeAccountService.findAll()
       .then((response) => {
         // caso sucesso, adiciona a lista no state
-        setCategories(response.data);
+        setTypeAccounts(response.data);
         setApiError("");
       })
       .catch((erro) => {
-        setApiError("Falha ao carregar a combo de categorias.");
+        setApiError("Falha ao carregar a combo de Tipos de Contas.");
       });
     if (id) {
       // ao editar um produto, busca ele no back-end e carrega no objeto form que está no state.
-      ProductService.findOne(parseInt(id))
+      AccountService.findOne(parseInt(id))
         .then((response) => {
           if (response.data) {
             console.log(response.data);
             setEntity({
               id: response.data.id,
-              name: response.data.name,
-              price: response.data.price,
-              description: response.data.description,
-              category: { id: response.data.category.id, name: "" },
+              number: response.data.number,
+              agency: response.data.agency,
+              bank: response.data.bank,
+              type: { id: response.data.type.id, name: "" },
             });
             setApiError("");
           } else {
-            setApiError("Falha ao carregar o produto.");
+            setApiError("Falha ao carregar a conta.");
           }
         })
         .catch((error) => {
-          setApiError("Falha ao carregar o produto.");
+          setApiError("Falha ao carregar a conta.");
         });
     } else {
       // ao cadastrar um novo produto, valoriza no objeto form a primeira categoria do select
       setEntity((previousEntity) => {
         return {
           ...previousEntity,
-          category: { id: categories[0].id, name: "" },
+          type: { id: typeAccounts[0].id, name: "" },
         };
       });
     }
@@ -85,15 +85,15 @@ export function ProductFormPageV2() {
     reset(entity);
   }, [entity, reset]);
 
-  const onSubmit = (data: IProduct) => {
-    const product: IProduct = {
+  const onSubmit = (data: IAccount) => {
+    const account: IAccount = {
       ...data,
       id: entity.id,
-      category: { id: data.category.id, name: "" },
+      type: { id: data.type.id, name: "" },
     };
-    ProductService.save(product)
+    AccountService.save(account)
       .then((response) => {
-        navigate("/products-v2");
+        navigate("/accounts");
       })
       .catch((error) => {
         setApiError("Falha ao salvar o produto.");
@@ -104,26 +104,26 @@ export function ProductFormPageV2() {
     <div className="container">
       <h1 className="fs-2 text-center">Cadastro de Produto - V2s</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={errors.name && true}>
-          <FormLabel htmlFor="name">Nome</FormLabel>
+        <FormControl isInvalid={errors.bank && true}>
+          <FormLabel htmlFor="name">Nome do Banco</FormLabel>
           <Input
             id="name"
-            placeholder="Nome do produto"
-            {...register("name", {
+            placeholder="Nome do Banco"
+            {...register("bank", {
               required: "O campo nome é obrigatório",
             })}
           />
           <FormErrorMessage>
-            {errors.name && errors.name.message}
+            {errors.bank && errors.bank.message}
           </FormErrorMessage>
         </FormControl>
-        <FormControl isInvalid={errors.price && true}>
-          <FormLabel htmlFor="price">Preço</FormLabel>
+        <FormControl isInvalid={errors.number && true}>
+          <FormLabel htmlFor="price">Numero da Conta</FormLabel>
           <Input
             id="price"
-            placeholder="0.0"
-            {...register("price", {
-              required: "O campo preço é obrigatório",
+            placeholder="0"
+            {...register("number", {
+              required: "O campo Numero da Conta é obrigatório",
               min: { value: 0.01, message: "O valor deve ser maior que zero" },
             })}
             type="number"
@@ -131,52 +131,46 @@ export function ProductFormPageV2() {
           />
 
           <FormErrorMessage>
-            {errors.price && errors.price.message}
+            {errors.number && errors.number.message}
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.description && true}>
-          <FormLabel htmlFor="description">Descrição</FormLabel>
-          <Textarea
-            id="description"
-            placeholder="Descrição do produto"
-            {...register("description", {
+        <FormControl isInvalid={errors.agency && true}>
+          <FormLabel htmlFor="agency">Agência</FormLabel>
+          <Input
+            id="agency"
+            placeholder="0"
+            {...register("agency", {
               required: "O campo descrição é obrigatório",
-              minLength: {
-                value: 2,
-                message: "O tamanho deve ser entre 2 e 1024 caracteres",
-              },
-              maxLength: {
-                value: 1024,
-                message: "O tamanho deve ser entre 2 e 1024 caracteres",
-              },
+              min: { value: 0.01, message: "O valor deve ser maior que zero" },
             })}
-            size="sm"
+            type="number"
+            step="any"
           />
           <FormErrorMessage>
-            {errors.description && errors.description.message}
+            {errors.agency && errors.agency.message}
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl isInvalid={errors.category && true}>
-          <FormLabel htmlFor="category">Categoria</FormLabel>
+        <FormControl isInvalid={errors.type && true}>
+          <FormLabel htmlFor="category">Tipo de Conta</FormLabel>
 
           <Select
-            id="category"
-            {...register("category.id", {
-              required: "O campo categoria é obrigatório",
+            id="type"
+            {...register("type.id", {
+              required: "O campo tipo é obrigatório",
             })}
             size="sm"
           >
-            {categories.map((category: ICategory) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+            {typeAccounts.map((type: ITypeAccount) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
               </option>
             ))}
           </Select>
 
           <FormErrorMessage>
-            {errors.description && errors.description.message}
+            {errors.type && errors.type.message}
           </FormErrorMessage>
         </FormControl>
         <div className="text-center">
@@ -192,7 +186,7 @@ export function ProductFormPageV2() {
       </form>
       {apiError && <div className="alert alert-danger">{apiError}</div>}
       <div className="text-center">
-        <Link to="/products-v2">Voltar</Link>
+        <Link to="/accounts">Voltar</Link>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICategory, IProduct } from "@/commons/interfaces";
 import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import { Input } from "@/components/Input";
-import CategoryService from "@/service/CategoryService";
+import CategoryService from "@/service/AccountService";
 import ProductService from "@/service/ProductService";
 
 export function ProductFormPage() {

@@ -28,22 +28,22 @@ export function NavBar() {
             </li>
             <li className="nav-item">
               <NavLink
-                to="/categories"
+                to="/accounts"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
               >
-                Categorias
+                Contas
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                to="/products"
+                to="/movements"
                 className={(navData) =>
                   navData.isActive ? "nav-link active" : "nav-link"
                 }
               >
-                Produtos
+                Movimentos
               </NavLink>
             </li>
 

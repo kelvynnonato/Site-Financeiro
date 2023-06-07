@@ -1,16 +1,25 @@
 export interface IUserSignup {
     username: string;
+    displayName: string;
     cellphone: string;
     email: string;
     password: string;
 }
 
 export interface IUserLogin {
-    email: string;
+    username: string;
     password: string;
 }
 
-export interface ICategory {
+export interface IAccount {
+    id?: number;
+    number: number;
+    agency: number;
+    bank: string;
+    type: ITypeAccount
+}
+
+export interface ITypeAccount{
     id?: number;
     name: string;
 }
@@ -20,5 +29,5 @@ export interface IProduct {
     name: string;
     description: string;
     price: number;
-    category: ICategory; //igual fazemos no backend (java)
+    account: IAccount; //igual fazemos no backend (java)
 }

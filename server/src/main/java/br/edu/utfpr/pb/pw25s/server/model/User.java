@@ -32,6 +32,11 @@ public class User  implements UserDetails {
     private String username;
 
     @NotNull
+    @Size(min = 4, max = 50)
+    @Column(length = 50, name = "display_name")
+    private String displayName;
+
+    @NotNull
     @Column(length = 20, name = "cellphone")
     @Size(min = 4, max = 20)
     @Pattern(regexp = "^[ 0-9-+]+$")

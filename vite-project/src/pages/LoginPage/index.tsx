@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export function LoginPage() {
   const [form, setForm] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const [apiError, setApiError] = useState(false);
@@ -27,7 +27,7 @@ export function LoginPage() {
 
   const onClickLogin = () => {
     const user: IUserLogin = {
-      email: form.email,
+      username: form.username,
       password: form.password,
     };
     console.log(user);
@@ -55,14 +55,14 @@ export function LoginPage() {
     <div className="container">
       <h1 className="text-center">Login</h1>
       <div className="col-12 mb-3">
-        <label>Informe seu email</label>
+        <label>Informe seu username</label>
         <input
           className={apiError ? "form-control is-invalid" : "form-control"}
           type="text"
-          placeholder="Informe o seu email"
-          name="email"
+          placeholder="Informe o seu username"
+          name="username"
           onChange={onChange}
-          value={form.email}
+          value={form.username}
         />
       </div>
       <div className="col-12 mb-3">

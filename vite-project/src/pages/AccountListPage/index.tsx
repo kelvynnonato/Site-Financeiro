@@ -1,9 +1,9 @@
-import { ICategory } from "@/commons/interfaces";
-import CategoryService from "@/service/CategoryService";
+import { IAccount } from "@/commons/interfaces";
+import AccountService from "@/service/AccountService";
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
-export function CategoryListPage(){
+export function AccountListPage(){
     const [data, setData] = useState([]);
     
     useEffect(() => {
@@ -11,14 +11,15 @@ export function CategoryListPage(){
     }, []);
 
     const loadData = () => {
-        CategoryService.findAll()
+        AccountService.findAll()
         .then((response) => {
             setData(response.data);
+            console.log(response.data);
         })
         .catch((error) => {});
     }
     const onRemove = (id: number) => {
-        CategoryService.remove(id)
+        AccountService.remove(id)
         .then((response) => {
             loadData();
         })
@@ -29,31 +30,37 @@ export function CategoryListPage(){
     return(
         <>
             <div className="container">
-                <h1 className="text-center">Category List PAGE</h1>
-                <Link to="/categories/new" className="btn btn-success">
-                    Nova Categoria
+                <h1 className="text-center">Account List PAGE</h1>
+                <Link to="/accounts/new" className="btn btn-success">
+                    Nova Conta
                 </Link>
                 <table className="table table-striped">
                     <thead>
                         <tr>
                             <td>#ID</td>
-                            <td>Nome</td>
+                            <td>Banco</td>
+                            <td>Numero</td>
+                            <td>Agencia</td>
+                            <td>Tipo de Conta</td>
                             <td>Ações</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((category: ICategory) => (
+                        {data.map((account: IAccount) => (
                             <tr>
-                                <td>{category.id}</td>
-                                <td>{category.name}</td>
+                                <td>{account.id}</td>
+                                <td>{account.bank}</td>
+                                <td>{account.number}</td>
+                                <td>{account.agency}</td>
+                                <td>{account.type.name}</td>
                                 <td>
-                                    <Link to={`/categories/${category.id}`}
+                                    <Link to={`/accounts/${account.id}`}
                                     className="btn btn-primary"
                                     >
                                       Editar
                                     </Link>
                                     <button className="btn btn-danger"
-                                     onClick={() => onRemove(category.id ? category.id : 0)}
+                                     onClick={() => onRemove(account.id ? account.id : 0)}
                                      >
                                     Remover
                                      </button>

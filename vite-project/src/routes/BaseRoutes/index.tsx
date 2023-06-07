@@ -1,14 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import { LoginPage } from "../../pages/LoginPage";
 import { UserSignupPage } from "../../pages/UserSignupPage";
-import { CategoryListPage } from "../../pages/CategoryListPage";
+import { AccountListPage } from "../../pages/AccountListPage";
 import { HomePage } from "../../pages/HomePage";
 import { AuthenticatedRoutes } from "../AuthenticadedRoutes";
-import { CategoryFormPage } from "@/pages/CategoryFormPage";
+import { AccountFormPage } from "@/pages/AccountFormPage";
 import { ProductListPage } from "@/pages/ProductListPage";
 import { ProductFormPage } from "@/pages/ProductFormPage";
 import { ProductListPageV2 } from "@/pages/ProductListPageV2";
 import { ProductFormPageV2 } from "@/pages/ProductFormPageV2";
+import { AccountFormPageTest } from "@/pages/AccountFormPageTest";
 
 export function BaseRoutes() {
   return (
@@ -22,9 +23,9 @@ export function BaseRoutes() {
         <Route element={<AuthenticatedRoutes />}>
             <Route path="/home" element={<HomePage />} />
             <Route path="/" element={<HomePage />} />
-            <Route path="/categories" element={<CategoryListPage />} />
-            <Route path="/categories/new" element={<CategoryFormPage />} />
-            <Route path="/categories/:id" element={<CategoryFormPage />} />
+            <Route path="/accounts" element={<AccountListPage />} />
+            <Route path="/accounts/new" element={<AccountFormPageTest />} />
+            <Route path="/accounts/:id" element={<AccountFormPageTest />} />
 
             <Route path="/products" element={<ProductListPage />} />
             <Route path="/products/new" element={<ProductFormPage />} />

@@ -17,6 +17,11 @@ public class UserDTO {
     private String username;
 
     @NotNull
+    @Size(min = 4, max = 50)
+    @Column(length = 50, name = "display_name")
+    private String displayName;
+
+    @NotNull
     @Column(length = 50, name = "cellphone")
     @Size(min = 4, max = 50)
     @Pattern(regexp = "^[ 0-9-+]+$")
