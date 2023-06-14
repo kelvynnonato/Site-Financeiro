@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import logo from "@/assets/utfpr-logo.png";
+import logo from "@/assets/MazeBank.png";
 import AuthService from "@/service/AuthService";
 
 export function NavBar() {
@@ -13,7 +13,7 @@ export function NavBar() {
       <div className="container">
         <nav className="navbar navbar-light navbar-expand">
           <Link to="/" className="navbar-brand">
-            <img src={logo} width="60" alt="UTFPR" />
+            <img src={logo} width="60" alt="MazeBank" />
           </Link>
           <ul className="navbar-nav me-auto mb-2 mb-md-0">
             <li className="nav-item">
@@ -46,18 +46,6 @@ export function NavBar() {
                 Movimentos
               </NavLink>
             </li>
-
-            <li className="nav-item">
-              <NavLink
-                to="/products-v2"
-                className={(navData) =>
-                  navData.isActive ? "nav-link active" : "nav-link"
-                }
-              >
-                Produtos V2
-              </NavLink>
-            </li>
-
             <li className="nav-item">
               <button className="btn btn-light" onClick={onClickLogout}>
                 &times; Sair

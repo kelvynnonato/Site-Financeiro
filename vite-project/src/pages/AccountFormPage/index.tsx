@@ -1,198 +1,194 @@
-import { IAccount, ITypeAccount } from "@/commons/interfaces";
-import { ButtonWithProgress } from "@/components/ButtonWithProgress";
-import { Input } from "@/components/Input";
-import AccountService from "@/service/AccountService";
-import TypeAccountService from "@/service/TypeAccountService";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
+import { useForm } from "react-hook-form";
+import {
+  FormErrorMessage,
+  FormLabel,
+  FormControl,
+  Input,
+  Textarea,
+  Select,
+  Button,
+} from "@chakra-ui/react";
+import { IAccount, ITypeAccount } from "@/commons/interfaces";
+import TypeAccountService from "@/service/TypeAccountService";
+import AccountService from "@/service/AccountService";
 
 export function AccountFormPage() {
-    const [form, setForm] = useState<IAccount>({
-        id: undefined,
-        number: 0,
-        agency: 0,
-        bank: "",
-        type: { id: undefined, name: "" }
-    });
-    const [errors, setErrors] = useState({
-       id: undefined,
-       number: '',
-       agency: '',
-       bank: '',
-       type: ''
-    });
-    const [pendingApiCall, setPendingApiCall] = useState(false);
-    const [apiError, setApiError] = useState("");
-    const [typeAccounts, setTypeAccounts] = useState<ITypeAccount[]>([]);
-    const navigate = useNavigate();
-    const { id } = useParams();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<IAccount>();
+  const [apiError, setApiError] = useState("");
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [typeAccounts, setTypeAccounts] = useState<ITypeAccount[]>([]);
+  const [entity, setEntity] = useState<IAccount>({
+    id: undefined,
+    number: 0,
+    agency: 0,
+    bank: "",
+    type: { id: undefined, name: "" }
+  });
 
-    useEffect(() => {
-      loadData();
-    }, []);
-  
-    const loadData = async () => {
-      await TypeAccountService.findAll()
-      .then((response)=> {
-          setTypeAccounts(response.data);
-          setApiError("");
+  // Executa ao carregar o componente
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    // Busca a lista de categorias
+    await TypeAccountService.findAll()
+      .then((response) => {
+        // caso sucesso, adiciona a lista no state
+        setTypeAccounts(response.data);
+        setApiError("");
       })
-      .catch((responseError) => {
-          setApiError("Falha ao carregar a lista de categorias");
+      .catch((erro) => {
+        setApiError("Falha ao carregar a combo de Tipos de Contas.");
       });
-  
-      if (id) {
-          AccountService.findOne( parseInt(id) ).then((response) => {
-              if (response.data) {
-                  setForm({ ...response.data });
-              }
-              setApiError("");
-          })
-          .catch((responseError) => {
-              setApiError("Falha ao carregar o produto");
-          })
-      } else {
-          setForm((previousForm) => {
-              return {
-              ...previousForm,
-              type: { id:typeAccounts[0].id, name: ""},
-              };
-          });
+    if (id) {
+      // ao editar um produto, busca ele no back-end e carrega no objeto form que está no state.
+      AccountService.findOne(parseInt(id))
+        .then((response) => {
+          if (response.data) {
+            console.log(response.data);
+            setEntity({
+              id: response.data.id,
+              number: response.data.number,
+              agency: response.data.agency,
+              bank: response.data.bank,
+              type: { id: response.data.type.id, name: "" },
+            });
+            setApiError("");
+          } else {
+            setApiError("Falha ao carregar a conta.");
+          }
+        })
+        .catch((error) => {
+          setApiError("Falha ao carregar a conta.");
+        });
+    } else {
+      // ao cadastrar um novo produto, valoriza no objeto form a primeira categoria do select
+      if (typeAccounts) {
+        setEntity((previousEntity) => {
+          return {
+            ...previousEntity,
+            // type: { id: typeAccounts[0].id, name: "" },
+            type: { id: 1, name: "" },
+          };
+        });
       }
+    }
+  };
+
+  useEffect(() => {
+    reset(entity);
+  }, [entity, reset]);
+
+  const onSubmit = (data: IAccount) => {
+    const account: IAccount = {
+      ...data,
+      id: entity.id,
+      type: { id: data.type.id, name: "" },
     };
-
-    const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = event.target;
-        setForm((previousForm) => {
-          return {
-            ...previousForm,
-            [name]: value,
-          };
-        });
-    
-        setErrors((previousErrors) => {
-          return {
-            ...previousErrors,
-            [name]: undefined,
-          };
-        });
-    };
-
-    const onChangeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-      const { value, name } = event.target;
-      setForm((previousForm) => {
-        return {
-          ...previousForm,
-          [name]: { id: value },
-        };
-      });
-      setErrors((previousErrors) => {
-        return {
-          ...previousErrors,
-          [name]: undefined,
-        };
-      });
-    };
-
-    const onSubmit = () => {
-      setPendingApiCall(true);
-      const account : IAccount = {
-        id: form.id,
-        number: form.number,
-        agency: form.agency,
-        type: form.type,
-        bank: form.bank,
-      };
-
-      AccountService.save(account)
+    AccountService.save(account)
       .then((response) => {
         navigate("/accounts");
       })
       .catch((error) => {
-        if (error.response.data && error.response.data.validationErrors) {
-          setErrors(error.response.data.validationErrors);
-        }
         setApiError("Falha ao salvar o produto.");
-        setPendingApiCall(false);
       });
-    };
-    
-    return (
-        <div className="container">
-            <h1 className="text-center">Cadastro de Conta</h1>
-            <div className="col-12 mb-3">
-                <Input
-                    className="form-control"
-                    name="bank"
-                    type="text"
-                    placeholder="Informe o nome do Banco"
-                    label="Informe o nome do Banco"
-                    value={form.bank}
-                    hasError={errors.bank ? true : false}
-                    error={errors.bank}
-                    onChange={onChange}
-                />
-                <Input
-                    className="form-control"
-                    name="number"
-                    type="number"
-                    placeholder="Informe o numero da conta"
-                    label="Informe o numero da conta"
-                    value={form.number.toString()}
-                    hasError={errors.number ? true : false}
-                    error={errors.number}
-                    onChange={onChange}
-                />
-                <Input
-                    className="form-control"
-                    name="agency"
-                    type="number"
-                    placeholder="Informe o numero da agencia"
-                    label="Informe o numero da agencia"
-                    value={form.agency.toString()}
-                    hasError={errors.agency ? true : false}
-                    error={errors.agency}
-                    onChange={onChange}
-                />
-                <div className="col-12 mb-3">
-                  <label>Tipo de Conta</label>
+  };
 
-                  <select 
-                  className="form-control"
-                  name="typeAcocunt"
-                  value={form.type.id}
-                  onChange={onChangeSelect}
-                  >
-                      {/* Mostra a lista de option do select de acordo com a lista de categorias vinda do server */}
-                      {typeAccounts.map((type: ITypeAccount) => (
-                        <option key={type.id} value={type.id}>
-                          {type.name}
-                        </option>
-                     ))
-                     }
-                 </select>
+  return (
+    <div className="container">
+      <h1 className="fs-2 text-center">Cadastro de Conta</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl isInvalid={errors.bank && true}>
+          <FormLabel htmlFor="name">Nome do Banco</FormLabel>
+          <Input
+            id="name"
+            placeholder="Nome do Banco"
+            {...register("bank", {
+              required: "O campo nome é obrigatório",
+            })}
+          />
+          <FormErrorMessage>
+            {errors.bank && errors.bank.message}
+          </FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.number && true}>
+          <FormLabel htmlFor="price">Numero da Conta</FormLabel>
+          <Input
+            id="price"
+            placeholder="0"
+            {...register("number", {
+              required: "O campo Numero da Conta é obrigatório",
+            })}
+            type="number"
+            step="any"
+          />
 
-                  {errors.type && (
-                  <div className="invalid-feedback d-block">{errors.type}</div>
-                  )}
-                </div>
-                {apiError && <div className="alert alert-danger">{apiError}</div>}
-                <div className="text-center">
-                  <ButtonWithProgress
-                    className="btn btn-primary"
-                    onClick={onSubmit}
-                    disabled={pendingApiCall ? true : false}
-                    pendingApiCall={pendingApiCall}
-                    text = "Salvar"
-                    />
-                </div>
-                <div className="text-center mb-3">
-                  <Link to="/accounts" className="btn btn-outline-secondary">
-                    Voltar
-                  </Link>
-                </div>
-            </div>
+          <FormErrorMessage>
+            {errors.number && errors.number.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={errors.agency && true}>
+          <FormLabel htmlFor="agency">Agência</FormLabel>
+          <Input
+            id="agency"
+            placeholder="0"
+            {...register("agency", {
+              required: "O campo descrição é obrigatório",
+            })}
+            type="number"
+            step="any"
+          />
+          <FormErrorMessage>
+            {errors.agency && errors.agency.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={errors.type && true}>
+          <FormLabel htmlFor="typeAccount">Tipo de Conta</FormLabel>
+
+          <Select
+            id="type"
+            {...register("type.id", {
+              required: "O campo tipo é obrigatório",
+            })}
+            size="sm"
+          >
+            {typeAccounts.map((type: ITypeAccount) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </Select>
+
+          <FormErrorMessage>
+            {errors.type && errors.type.message}
+          </FormErrorMessage>
+        </FormControl>
+        <div className="text-center">
+          <Button
+            mt={4}
+            colorScheme="teal"
+            isLoading={isSubmitting}
+            type="submit"
+          >
+            Salvar
+          </Button>
         </div>
-    )
+      </form>
+      {apiError && <div className="alert alert-danger">{apiError}</div>}
+      <div className="text-center">
+        <Link to="/accounts">Voltar</Link>
+      </div>
+    </div>
+  );
 }

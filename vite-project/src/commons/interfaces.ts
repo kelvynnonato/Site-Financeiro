@@ -24,10 +24,28 @@ export interface ITypeAccount{
     name: string;
 }
 
-export interface IProduct {
+export interface IMovement {
+    id?: number;
+    valueAmount: number;
+    dateMovement: string;
+    category: ICategory;
+    description: string;
+    situation: ISituation;
+    type: ITypeMovement;
+    account: IAccount; //igual fazemos no backend (java)
+}
+
+export interface ICategory{
     id?: number;
     name: string;
-    description: string;
-    price: number;
-    account: IAccount; //igual fazemos no backend (java)
+}
+
+export interface ISituation{
+    id?: number;
+    name: string;
+}
+
+export interface ITypeMovement{
+    id?: number;
+    name: string;
 }

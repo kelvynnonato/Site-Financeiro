@@ -21,22 +21,23 @@ public class Movement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "value_amount")
     @NotNull
     private BigDecimal valueAmount;
 
     @NotNull
-    @Column(length = 20, name = "date")
+    @Column(length = 20, name = "date_movement")
     @Size(min = 4, max = 20)
     @Pattern(regexp = "^[ 0-9-+/]+$")
-    private String date;
+    private String dateMovement;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
     @NotNull
-    @Column(length = 255)
-    @Size(min = 4, max = 255)
+    @Column(length = 1024)
+    @Size(min = 4, max = 1024)
     private String description;
 
     @ManyToOne

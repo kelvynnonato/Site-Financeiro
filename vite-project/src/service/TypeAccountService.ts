@@ -17,11 +17,11 @@ const findOne = (id: number) => {
     return api.get(`/typeaccounts/${id}`);
 };
 
-const CategoryService = {
+const TypeAccountService = {
     findAll,
     save,
     remove,
     findOne,
 };
 
-export default CategoryService;
+export default TypeAccountService;

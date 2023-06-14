@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountServiceImpl extends CrudServiceImpl<Account, Long> implements AccountService {
     private final AuthService authService;
@@ -33,5 +35,12 @@ public class AccountServiceImpl extends CrudServiceImpl<Account, Long> implement
         User user = (User) authService.loadUserByUsername(username);
         entity.setUser(user);
         return super.save(entity);
+    }
+
+    @Override
+    public List<Account> findAll() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) authService.loadUserByUsername(username);
+        return accountRepository.findByUserId(user.getId());
     }
 }

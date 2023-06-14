@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ProductService from "@/service/ProductService";
+import MovementService from "@/service/MovementService";
 import {
   Table,
   Thead,
@@ -23,10 +23,10 @@ import {
   BsTrash,
   BsPlusCircle,
 } from "react-icons/bs";
-import { IProduct } from "@/commons/interfaces";
+import { IMovement } from "@/commons/interfaces";
 
-export function ProductListPageV2() {
-  const [data, setData] = useState<IProduct[]>([]);
+export function MovementListPage() {
+  const [data, setData] = useState<IMovement[]>([]);
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
 
@@ -35,13 +35,13 @@ export function ProductListPageV2() {
   }, []);
 
   const loadData = () => {
-    ProductService.findAll()
+    MovementService.findAll()
       .then((response) => {
         setData(response.data);
         setApiError("");
       })
       .catch((error) => {
-        setApiError("Falha ao carregar a lista de produtos.");
+        setApiError("Falha ao carregar a lista de movimentos.");
       });
   };
 
@@ -50,51 +50,58 @@ export function ProductListPageV2() {
   };
 
   const onRemove = (id: number) => {
-    ProductService.remove(id)
+    MovementService.remove(id)
       .then((response) => {
         loadData();
         setApiError("");
       })
       .catch((error) => {
-        setApiError("Falha ao remover o produto.");
+        setApiError("Falha ao remover o movimento.");
       });
   };
 
   return (
     <div className="container">
-      <h1 className="fs-2 mb-4 text-center">Lista de Produto V2</h1>
+      <h1 className="fs-2 mb-4 text-center">Lista de Movimentos</h1>
       <div className="text-center">
         <Link
           className="btn btn-success btn-icon mb-3"
-          to="/products-v2/new"
-          title="Novo Produto"
+          to="/movements/new"
+          title="Novo Movimento"
           style={{ display: 'inline-block' }}
         >
-          <BsPlusCircle  style={{ display: 'inline-block' }} /> Novo Produto
+          <BsPlusCircle  style={{ display: 'inline-block' }} /> Novo Movimento
         </Link>
       </div>
       <TableContainer>
         <Table>
-          <TableCaption>Lista de Produtos</TableCaption>
+          <TableCaption>Lista de Movimentos</TableCaption>
           <Thead>
             <Tr>
               <Th>#</Th>
-              <Th>Nome</Th>
-              <Th isNumeric>Preço</Th>
+              <Th isNumeric>Valor</Th>
+              <Th>Data</Th>
               <Th>Categoria</Th>
-              <Th>Ações</Th>
+              <Th>Descrição</Th>
+              <Th>Situação</Th>
+              <Th>Tipo de Movimento</Th>
+              <Th>Conta</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((product: IProduct) => (
+            {data.map((movement: IMovement) => (
               <Tr
-                key={product.id}
+                key={movement.id}
                 _hover={{ cursor: "pointer", background: "#eee" }}
               >
-                <Td>{product.id}</Td>
-                <Td>{product.name}</Td>
-                <Td isNumeric>{product.price}</Td>
-                <Td>{product.category?.name}</Td>
+                <Td>{movement.id}</Td>
+                <Td isNumeric>{movement.valueAmount}</Td>
+                <Td>{movement.dateMovement}</Td>
+                <Td>{movement.category?.name}</Td>
+                <Td>{movement.description}</Td>
+                <Td>{movement.situation?.name}</Td>
+                <Td>{movement.type?.name}</Td>
+                <Td>{movement.account?.bank}</Td>
                 <Td>
                   <Menu>
                     <MenuButton
@@ -106,13 +113,13 @@ export function ProductListPageV2() {
                     <MenuList>
                       <MenuItem
                         icon={<BsPencilSquare />}
-                        onClick={() => onEdit(`/products-v2/${product.id}`)}
+                        onClick={() => onEdit(`/movements/${movement.id}`)}
                       >
                         Editar
                       </MenuItem>
                       <MenuItem
                         icon={<BsTrash />}
-                        onClick={() => onRemove(product.id!)}
+                        onClick={() => onRemove(movement.id!)}
                       >
                         Remover
                       </MenuItem>
@@ -124,11 +131,14 @@ export function ProductListPageV2() {
           </Tbody>
           <Tfoot>
             <Tr>
-              <Th>#</Th>
-              <Th>Nome</Th>
-              <Th isNumeric>Preço</Th>
+            <Th>#</Th>
+              <Th isNumeric>Valor</Th>
+              <Th>Data</Th>
               <Th>Categoria</Th>
-              <Th>Ações</Th>
+              <Th>Descrição</Th>
+              <Th>Situação</Th>
+              <Th>Tipo de Movimento</Th>
+              <Th>Conta</Th>
             </Tr>
           </Tfoot>
         </Table>
