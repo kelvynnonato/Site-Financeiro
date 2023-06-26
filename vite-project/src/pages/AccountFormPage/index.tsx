@@ -126,7 +126,7 @@ export function AccountFormPage() {
             id="price"
             placeholder="0"
             {...register("number", {
-              required: "O campo Numero da Conta é obrigatório",
+              required: "O campo Número da Conta é obrigatório",
             })}
             type="number"
             step="any"

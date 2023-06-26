@@ -23,8 +23,12 @@ export function MovementFormPage() {
     register,
     formState: { errors, isSubmitting },
     reset,
+    getValues,
   } = useForm<IMovement>();
   const [apiError, setApiError] = useState("");
+  const [transfer, setTransfer] = useState({
+    type: {id: 0}
+  })
   const navigate = useNavigate();
   const { id } = useParams();
   const [accounts, setAccounts] = useState<IAccount[]>([]);
@@ -140,6 +144,15 @@ export function MovementFormPage() {
       });
   };
 
+  const changeTypeMovement = () => {
+    if(getValues("type.id") == 3){
+      setTransfer({type: {id:3}})
+    }
+    else{
+      setTransfer({type: {id:0}})
+    }
+  }
+
   return (
     <div className="container">
       <h1 className="fs-2 text-center">Cadastro de Movimentos</h1>
@@ -251,6 +264,7 @@ export function MovementFormPage() {
               required: "O campo tipo de movimento é obrigatório",
             })}
             size="sm"
+            onClick = {changeTypeMovement}
           >
             {typeMovements.map((type: ITypeMovement) => (
               <option key={type.id} value={type.id}>
@@ -285,6 +299,28 @@ export function MovementFormPage() {
             {errors.type && errors.type.message}
           </FormErrorMessage>
         </FormControl>
+          {transfer.type.id == 3 && <div>
+          <FormControl isInvalid={errors.account && true}>
+            <FormLabel htmlFor="account">Conta Destino</FormLabel>
+            <Select
+              id="account"
+              {...register("account.id", {
+                required: "O campo conta destino é obrigatório",
+              })}
+              size="sm"
+            >
+              {accounts.map((account: IAccount) => (
+                <option key={account.id} value={account.id}>
+                  {account.bank}
+                </option>
+              ))}
+            </Select>
+
+            <FormErrorMessage>
+              {errors.type && errors.type.message}
+            </FormErrorMessage>
+          </FormControl>
+        </div>}
 
         <div className="text-center">
           <Button

@@ -7,7 +7,7 @@ insert into tb_typeaccount (name) values ('Casa');
 INSERT INTO tb_user(display_name, username, cellphone, email, password) VALUES ('Administrador', 'admin', '18996950566', 'kelvyn@gmail.com', '$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem');
 INSERT INTO tb_user(display_name, username, cellphone, email, password) VALUES ('Teste', 'teste','1899717557', 'kelvyn@.com', '$2a$10$.PVIfB07x.SfMYTcToxL0.yxcLWU0GbS2NUO1W1QAvqMm/TsFhVem');
 
-insert into tb_account (number, agency, bank, type_account_id, user_id) values (000000000, 4000, 'Banco do Brasil', 1, 1);
+insert into tb_account (number, agency, bank, type_account_id, user_id) values (010002200, 4000, 'Banco do Brasil', 1, 1);
 insert into tb_account (number, agency, bank, type_account_id, user_id) values (000043000, 4010, 'Banco Caixa', 2, 1);
 insert into tb_account (number, agency, bank, type_account_id, user_id) values (456000000, 3040, 'Nubank', 3, 2);
 
@@ -31,6 +31,9 @@ insert into tb_typemovement (name) values ('Transferencia entre contas');
 
 insert into tb_situation (name) values ('Pendente');
 insert into tb_situation (name) values ('Pago');
+insert into tb_situation (name) values ('Recebido');
 
 insert into tb_movement (value_amount, date_movement, category_id, description, situation_id, typemovement_id, account_id) values (1000.00, '20/10/2022', 5, 'vendi alguma coisa', 1, 1, 1);
-insert into tb_movement (value_amount, date_movement, category_id, description, situation_id, typemovement_id, account_id) values (50.00, '13/06/2023', 12, 'Comprei Sorvete', 2 , 2, 3);
+insert into tb_movement (value_amount, date_movement, category_id, description, situation_id, typemovement_id, account_id) values (50.00, '13/06/2023', 12, 'Comprei Sorvete', 2 , 2, 2);
+insert into tb_movement (value_amount, date_movement, category_id, description, situation_id, typemovement_id, account_id) values (400.00, '05/02/2023', 6, 'Transferindo para ficar com algo na conta', 2 , 3, 1);
+insert into tb_movement (value_amount, date_movement, category_id, description, situation_id, typemovement_id, account_id) values (400.00, '05/02/2023', 6, 'Transferindo para ficar com algo na conta', 3 , 3, 2);
