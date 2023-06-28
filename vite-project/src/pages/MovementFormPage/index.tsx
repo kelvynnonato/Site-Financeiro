@@ -43,7 +43,7 @@ export function MovementFormPage() {
     description: "",
     situation: { id: undefined, name: ""},
     type: { id: undefined, name: "" },
-    account: { id: undefined, bank: "", number: 0, agency: 0, type: {id: undefined, name: ""} },
+    account: { id: undefined, bank: "", number: 0, agency: 0, type: {id: undefined, name: ""}, balance: 0 },
   });
 
   // Executa ao carregar o componente
@@ -100,7 +100,7 @@ export function MovementFormPage() {
               description: response.data.description,
               situation: { id: response.data.situation.id, name: "" },
               type: { id: response.data.type.id, name: "" },
-              account: { id: response.data.account.id, bank: "", number: 0, agency: 0, type: {id: response.data.type.id, name: "",}},
+              account: { id: response.data.account.id, bank: "", number: 0, agency: 0, type: {id: response.data.type.id, name: ""}, balance: 0},
             });
             setApiError("");
           } else {
@@ -117,7 +117,7 @@ export function MovementFormPage() {
           category: {id: 1, name: ""},
           situation: { id: 1, name: "" },
           type: { id: 1, name: "" },
-          account: { id: 1, bank: "", agency: 0, number: 0, type:{id: 1, name: ""} },
+          account: { id: 1, bank: "", agency: 0, number: 0, type:{id: 1, name: ""}, balance: 0 },
         };
       });
     }
@@ -127,21 +127,47 @@ export function MovementFormPage() {
     reset(entity);
   }, [entity, reset]);
 
-  const onSubmit = (data: IMovement) => {
+  const onSubmit = async (data: IMovement) => {
+    if(transfer.type.id != 3 ){
     const movement: IMovement = {
       ...data,
       id: entity.id,
       situation: { id: data.situation.id, name: "" },
       type: { id: data.type.id, name: "" },
-      account: { id: data.account.id, bank: "", agency: 0, number: 0, type: {id: data.type.id, name:""} },
+      account: { id: data.account.id, bank: "", agency: 0, number: 0, type: {id: data.type.id, name:""}, balance: 0 },
     };
-    MovementService.save(movement)
+    await MovementService.save(movement)
+    
       .then((response) => {
         navigate("/movements");
       })
       .catch((error) => {
         setApiError("Falha ao salvar o movimento.");
       });
+    }else{
+      const mov_D: IMovement = {
+        ...data,
+      id: entity.id,
+      situation: { id: data.situation.id, name: "" },
+      type: { id: 2, name: "" },
+      account: { id: data.account.id, bank: "", agency: 0, number: 0, type: {id: data.type.id, name:""}, balance: 0 },
+      };
+      const mov_R: IMovement = {
+        ...data,
+      id: entity.id,
+      situation: { id: data.situation.id, name: "" },
+      type: { id: 1, name: "" },
+      account: { id: data.accountD?.id, bank: "", agency: 0, number: 0, type: {id: data.type.id, name:""}, balance: 0 },
+      };
+      await MovementService.save(mov_D)
+      await MovementService.save(mov_R)
+      .then((response) => {
+        navigate("/movements");
+      })
+      .catch((error) => {
+        setApiError("Falha ao salvar o movimento.");
+      });
+    }
   };
 
   const changeTypeMovement = () => {
@@ -175,7 +201,7 @@ export function MovementFormPage() {
         </FormControl>
 
         <FormControl isInvalid={errors.dateMovement && true}>
-          <FormLabel htmlFor="dateMovement">Preço</FormLabel>
+          <FormLabel htmlFor="dateMovement">Data</FormLabel>
           <Input
             id="dateMovement"
             placeholder="10/10/1010"
@@ -301,10 +327,10 @@ export function MovementFormPage() {
         </FormControl>
           {transfer.type.id == 3 && <div>
           <FormControl isInvalid={errors.account && true}>
-            <FormLabel htmlFor="account">Conta Destino</FormLabel>
+            <FormLabel htmlFor="accountD">Conta Destino</FormLabel>
             <Select
-              id="account"
-              {...register("account.id", {
+              id="accountD"
+              {...register("accountD.id", {
                 required: "O campo conta destino é obrigatório",
               })}
               size="sm"

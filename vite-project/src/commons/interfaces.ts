@@ -16,7 +16,8 @@ export interface IAccount {
     number: number;
     agency: number;
     bank: string;
-    type: ITypeAccount
+    type: ITypeAccount;
+    balance: number;
 }
 
 export interface ITypeAccount{
@@ -32,7 +33,8 @@ export interface IMovement {
     description: string;
     situation: ISituation;
     type: ITypeMovement;
-    account: IAccount; //igual fazemos no backend (java)
+    account: IAccount;
+    accountD?: IAccount; //igual fazemos no backend (java)
 }
 
 export interface ICategory{

@@ -83,6 +83,7 @@ export function AccountListPage() {
               <Th isNumeric>Agência</Th>
               <Th isNumeric>Número da Conta</Th>
               <Th>Tipo de Conta</Th>
+              <Th isNumeric>Saldo</Th>
               <Th>Ações</Th>
             </Tr>
           </Thead>
@@ -97,6 +98,7 @@ export function AccountListPage() {
                 <Td isNumeric>{account.agency}</Td>
                 <Td isNumeric>{account.number}</Td>
                 <Td>{account.type?.name}</Td>
+                <Td isNumeric>{account.balance}</Td>
                 <Td>
                   <Menu>
                     <MenuButton
@@ -124,6 +126,15 @@ export function AccountListPage() {
               </Tr>
             ))}
           </Tbody>
+          <Tfoot><Tr>
+              <Th>#</Th>
+              <Th>Nome do Banco</Th>
+              <Th isNumeric>Agência</Th>
+              <Th isNumeric>Número da Conta</Th>
+              <Th>Tipo de Conta</Th>
+              <Th isNumeric>Saldo</Th>
+              <Th>Ações</Th>
+            </Tr></Tfoot>
         </Table>
       </TableContainer>
       {apiError && <div className="alert alert-danger">{apiError}</div>}

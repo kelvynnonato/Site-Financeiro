@@ -30,7 +30,8 @@ export function AccountFormPage() {
     number: 0,
     agency: 0,
     bank: "",
-    type: { id: undefined, name: "" }
+    type: { id: undefined, name: "" },
+    balance: 0
   });
 
   // Executa ao carregar o componente
@@ -61,6 +62,7 @@ export function AccountFormPage() {
               agency: response.data.agency,
               bank: response.data.bank,
               type: { id: response.data.type.id, name: "" },
+              balance: response.data.balance,
             });
             setApiError("");
           } else {
@@ -150,6 +152,22 @@ export function AccountFormPage() {
           />
           <FormErrorMessage>
             {errors.agency && errors.agency.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={errors.agency && true}>
+          <FormLabel htmlFor="balance">Saldo</FormLabel>
+          <Input
+            id="balance"
+            placeholder="0"
+            {...register("balance", {
+              required: "O campo saldo é obrigatório",
+            })}
+            type="number"
+            step="any"
+          />
+          <FormErrorMessage>
+            {errors.balance && errors.balance.message}
           </FormErrorMessage>
         </FormControl>
 
