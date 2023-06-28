@@ -39,4 +39,8 @@ public class Account {
     @ManyToOne
     @JoinColumn(name= "user_id", referencedColumnName = "id")
     private User user;
+
+    @NotNull
+    @Column
+    private long balance;
 }
